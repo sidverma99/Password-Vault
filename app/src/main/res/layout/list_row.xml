@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        app:cardBackgroundColor="#FDD835"
+        app:cardCornerRadius="24dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cabin_medium"
+                android:text="Website -"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/website"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/link"
+                android:fontFamily="@font/cabin_medium"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/link"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/cabin_medium"
+                android:text="Username -"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/link"
+                android:layout_toRightOf="@+id/email"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/cabin_medium"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/email"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/cabin_medium"
+                android:text="Password -"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/email"
+                android:layout_toRightOf="@id/pin"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/cabin_medium"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+            <Button
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Show Password"
+                android:id="@+id/show_password_btn"
+                android:clickable="true"
+                android:layout_below="@id/pin"
+                android:textSize="16sp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_btn"
+                android:textAllCaps="false"
+                android:fontFamily="@font/cabin_medium"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/update_password_btn"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pin"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@id/show_password_btn"
+                android:background="@drawable/background_btn"
+                android:fontFamily="@font/cabin_medium"
+                android:clickable="true"
+                android:text="Update Data"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/delete_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pin"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="21dp"
+                android:clickable="true"
+                android:layout_toRightOf="@id/update_password_btn"
+                android:background="@android:color/transparent"
+                android:src="@drawable/delete" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
