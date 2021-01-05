@@ -37,7 +37,7 @@
         android:src="@drawable/vault" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/auth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
@@ -45,9 +45,24 @@
         android:layout_marginRight="15dp"
         android:background="@drawable/background_btn"
         android:clickable="true"
+        android:filterTouchesWhenObscured="false"
+        android:fitsSystemWindows="false"
         android:fontFamily="@font/droid_sans_bold"
         android:text="Authenticate"
         android:textAllCaps="false"
         android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="650dp"
+        android:layout_marginRight="22dp"
+        android:fontFamily="@font/droid_sans"
+        android:gravity="center"
+        android:text="Click on the button for Biometric Authentication"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
