@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.app.KeyguardManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
@@ -22,7 +23,7 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_intro);
         authenticate=(Button)findViewById(R.id.auth);
         authenticate.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.P)
@@ -76,7 +77,8 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                notifyUser("Authentication is successful");
+                startActivity(new Intent(IntroActivity.this,PasswordActivity.class));
+                finish();
             }
 
             @Override
