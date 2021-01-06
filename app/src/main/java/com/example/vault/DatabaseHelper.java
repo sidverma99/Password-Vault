@@ -45,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public List<Data> getAllPassword(){
         List<Data> dataList=new ArrayList<>();
-        String query="Select * From "+Data.TABLE_NAME;
+        String query="SELECT * FROM "+Data.TABLE_NAME;
         SQLiteDatabase database=this.getWritableDatabase();
         Cursor cursor=database.rawQuery(query,null);
         if (cursor.moveToFirst()){

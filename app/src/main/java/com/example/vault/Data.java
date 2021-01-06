@@ -12,7 +12,7 @@ public class Data {
     public static final String COLUMN_USERNAME="username";
     public static final String COLUMN_PASSWORD="password";
 
-    public static final String CREATE_TABLE="create table "+TABLE_NAME+"("+COLUMN_ID+" INTEGER PRIMARY KEY AUTO INCREMENT,"+COLUMN_WEB+" TEXT,"+COLUMN_USERNAME+" TEXT,"+COLUMN_PASSWORD+" TEXT"+")";
+    public static final String CREATE_TABLE="create table "+TABLE_NAME+"("+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+COLUMN_WEB+" TEXT,"+COLUMN_USERNAME+" TEXT,"+COLUMN_PASSWORD+" TEXT"+")";
 
     public Data() {
     }
