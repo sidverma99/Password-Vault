@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int version=1;
-    private static final String DATABASE_NAME="password.db";
+    private static final String DATABASE_NAME="password_db";
 
     public DatabaseHelper(Context context){
         super(context,DATABASE_NAME,null,version);

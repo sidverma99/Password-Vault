@@ -43,25 +43,22 @@ public class PasswordActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                noData.setVisibility(View.GONE);
-                addData();
+                addDialog();
             }
-        });
+        }); mPasswordAdapter=new PasswordAdapter(this,mDataList);
         mPasswordAdapter=new PasswordAdapter(this,mDataList);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mPasswordAdapter);
     }
-    public void addData(){
-        Data data=new Data();
+    private void addDialog(){
         LayoutInflater inflater=LayoutInflater.from(getApplicationContext());
         View view=inflater.inflate(R.layout.data_dialog,null);
         AlertDialog.Builder builder=new AlertDialog.Builder(PasswordActivity.this);
         builder.setView(view);
-        EditText link=view.findViewById(R.id.input_website);
-        EditText username=view.findViewById(R.id.input_email);
-        EditText password=view.findViewById(R.id.input_password);
-        TextView title=view.findViewById(R.id.title);
+        final EditText link=view.findViewById(R.id.input_website);
+        final EditText email=view.findViewById(R.id.input_email);
+        final EditText password=view.findViewById(R.id.input_password);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -71,8 +68,28 @@ public class PasswordActivity extends AppCompatActivity {
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                if(TextUtils.isEmpty(link.getText().toString()) || TextUtils.isEmpty(email.getText().toString()) || TextUtils.isEmpty(password.getText().toString())){
+                    Toast.makeText(getApplicationContext(),"Every Field Is Important",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Data data=new Data();
+                data.setWebsite(link.getText().toString());
+                data.setPassword(password.getText().toString());
+                data.setEmail(email.getText().toString());
+                long id=mDatabaseHelper.insertPassword(data);
+                Data d=mDatabaseHelper.getData(id);
+                if(d!=null){
+                    mDataList.add(0,d);
+                    mPasswordAdapter.notifyDataSetChanged();
+                    if(mDatabaseHelper.getNotesCount()>0){
+                        noData.setVisibility(View.GONE);
+                    } else {
+                        noData.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
+        AlertDialog alertDialog=builder.create();
+        alertDialog.show();
     }
 }
