@@ -33,6 +33,7 @@ public class PasswordActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password);
+
         noData=(TextView)findViewById(R.id.no_data);
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -40,6 +41,12 @@ public class PasswordActivity extends AppCompatActivity {
         fab=(FloatingActionButton)findViewById(R.id.fab);
         mDatabaseHelper=new DatabaseHelper(this);
         mDataList.addAll(mDatabaseHelper.getAllPassword());
+        if(mDataList.size()==0){
+            noData.setVisibility(View.VISIBLE);
+        }
+        if (mDataList.size()>0){
+            noData.setVisibility(View.GONE);
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +86,7 @@ public class PasswordActivity extends AppCompatActivity {
                 long id=mDatabaseHelper.insertPassword(data);
                 Data d=mDatabaseHelper.getData(id);
                 if(d!=null){
-                    mDataList.add(0,d);
+                    mDataList.add(d);
                     mPasswordAdapter.notifyDataSetChanged();
                     if(mDatabaseHelper.getNotesCount()>0){
                         noData.setVisibility(View.GONE);

@@ -14,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyViewHolder> {
-    private Context mContext;
+    private Context context;
     private List<Data> mDataList;
-
+    private Data data;
     public  PasswordAdapter(Context context,List<Data>dataList){
-        this.mContext=context;
+        this.context=context;
         this.mDataList=dataList;
     }
+    private DatabaseHelper mDatabaseHelper;
 
     @NonNull
     @Override
@@ -30,11 +31,24 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Data data=mDataList.get(position);
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
+        data=mDataList.get(position);
         holder.savedLink.setText(data.getWebsite());
         holder.savedUsername.setText(data.getEmail());
-        holder.savedPassword.setText(data.getPassword());
+        String p=data.getPassword();
+        char[] a=p.toCharArray();
+        for(int i=0;i<p.length();i++){
+            a[i]='*';
+        }
+        String q=new String(a);
+        holder.savedPassword.setText(q);
+        holder.showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.savedPassword.setText(data.getPassword());
+            }
+        });
+
     }
 
     @Override

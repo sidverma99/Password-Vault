@@ -39,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Data getData(long id){
         SQLiteDatabase database=this.getReadableDatabase();
         Cursor cursor=database.query(Data.TABLE_NAME,new String[]{Data.COLUMN_ID,Data.COLUMN_WEB,Data.COLUMN_USERNAME,Data.COLUMN_PASSWORD},Data.COLUMN_ID+"=?",new String[]{String.valueOf(id)},null,null,null,null);
+        if(cursor!=null) cursor.moveToFirst();
         Data data=new Data(cursor.getInt(cursor.getColumnIndex(Data.COLUMN_ID)),cursor.getString(cursor.getColumnIndex(Data.COLUMN_WEB)),cursor.getString(cursor.getColumnIndex(Data.COLUMN_USERNAME)),cursor.getString(cursor.getColumnIndex(Data.COLUMN_PASSWORD)));
         cursor.close();
         return data;
@@ -62,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return dataList;
     }
     public int getNotesCount(){
-        String query="Select * From "+Data.TABLE_NAME;
+        String query="SELECT * FROM "+Data.TABLE_NAME;
         SQLiteDatabase database=this.getReadableDatabase();
         Cursor cursor=database.rawQuery(query,null);
         int count=cursor.getCount();
