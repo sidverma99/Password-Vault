@@ -99,4 +99,12 @@ public class PasswordActivity extends AppCompatActivity {
         AlertDialog alertDialog=builder.create();
         alertDialog.show();
     }
+    public void toggle(){
+        if(mDataList.size()==0){
+            noData.setVisibility(View.VISIBLE);
+        }
+        if (mDataList.size()>0){
+            noData.setVisibility(View.GONE);
+        }
+    }
 }
