@@ -213,6 +213,13 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                             updatedData.setEmail(updateEmail.getText().toString());
                             updatedData.setPassword(updatePassword.getText().toString());
                             mDatabaseHelper.updateData(updatedData);
+                            mDataList.set(getAdapterPosition(),updatedData);
+                            if (mDataList.size()==0){
+                                ((PasswordActivity)context).toggle();
+                                PasswordAdapter.this.notifyItemChanged(getAdapterPosition(),updatedData);
+                            } else {
+                                PasswordAdapter.this.notifyItemChanged(getAdapterPosition(),updatedData);
+                            }
                         }
                     });
                     AlertDialog alertDialog=builder.create();
