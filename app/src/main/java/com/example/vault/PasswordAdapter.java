@@ -1,15 +1,27 @@
 package com.example.vault;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.KeyguardManager;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.hardware.biometrics.BiometricPrompt;
+import android.os.Build;
+import android.os.CancellationSignal;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -18,6 +30,8 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
     private Context context;
     private List<Data> mDataList;
     private Data data;
+    private Boolean deletePassword=false;
+    private CancellationSignal c1,c2,c3;
     public  PasswordAdapter(Context context,List<Data>dataList){
         this.context=context;
         this.mDataList=dataList;
@@ -43,12 +57,6 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
         }
         String q=new String(a);
         holder.savedPassword.setText(q);
-        holder.showPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.savedPassword.setText(data.getPassword());
-            }
-        });
     }
 
     @Override
@@ -69,20 +77,163 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
             delete=itemView.findViewById(R.id.delete_btn);
             update=itemView.findViewById(R.id.update_password_btn);
             delete.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.P)
                 @Override
                 public void onClick(View v) {
+                    authenticateUser();
+                }
+            });
+            update.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.P)
+                @Override
+                public void onClick(View v) {
+                    authenticateUser1();
+                }
+            });
+        }
+        @RequiresApi(api = Build.VERSION_CODES.P)
+        public void authenticateUser(){
+            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication").setSubtitle("Authentication is required to continue").setDescription("This app uses biometric authentication to protect your data").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).build();
+            biometricPrompt.authenticate(getCancellationSignal(),context.getMainExecutor(),getAuthenticationCallback());
+        }
+        private Boolean checkBiometricSupport(){
+            KeyguardManager keyguardManager=(KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+            PackageManager packageManager=context.getPackageManager();
+            if(!keyguardManager.isKeyguardSecure()){
+                return false;
+            }
+            if(ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_BIOMETRIC)!=packageManager.PERMISSION_GRANTED){
+                return false;
+            }
+            if(packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) return true;
+
+            return true;
+        }
+        @RequiresApi(api = Build.VERSION_CODES.P)
+        private BiometricPrompt.AuthenticationCallback getAuthenticationCallback(){
+            return new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                }
+
+                @Override
+                public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+                    super.onAuthenticationHelp(helpCode, helpString);
+                }
+
+                @Override
+                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
                     Data d=mDataList.get(getAdapterPosition());
                     mDatabaseHelper.deleteData(d);
                     mDataList.clear();
                     mDataList.addAll(mDatabaseHelper.getAllPassword());
-                    if(mDataList.size()==0){
-                        PasswordAdapter.this.notifyDataSetChanged();
+                    if (mDataList.size()==0){
                         ((PasswordActivity)context).toggle();
-                    }else {
+                        PasswordAdapter.this.notifyDataSetChanged();
+                    } else {
                         PasswordAdapter.this.notifyDataSetChanged();
                     }
                 }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                }
+            };
+        }
+        private CancellationSignal getCancellationSignal(){
+            c1=new CancellationSignal();
+            c1.setOnCancelListener(new CancellationSignal.OnCancelListener() {
+                @Override
+                public void onCancel() {
+
+                }
             });
+            return c1;
+        }
+        @RequiresApi(api = Build.VERSION_CODES.P)
+        public void authenticateUser1(){
+            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication").setSubtitle("Authentication is required to continue").setDescription("This app uses biometric authentication to protect your data").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).build();
+            biometricPrompt.authenticate(getCancellationSignal1(),context.getMainExecutor(),getAuthenticationCallback1());
+        }
+        @RequiresApi(api = Build.VERSION_CODES.P)
+        private BiometricPrompt.AuthenticationCallback getAuthenticationCallback1(){
+            return new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                }
+
+                @Override
+                public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+                    super.onAuthenticationHelp(helpCode, helpString);
+                }
+
+                @Override
+                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    LayoutInflater inflater=LayoutInflater.from(context);
+                    View view=inflater.inflate(R.layout.update_data,null);
+                    AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                    builder.setView(view);
+                    final EditText updateLink=view.findViewById(R.id.update_website);
+                    final EditText updateEmail=view.findViewById(R.id.update_email);
+                    final EditText updatePassword=view.findViewById(R.id.update_password);
+                    Data d=mDataList.get(getAdapterPosition());
+                    updateLink.setText(d.getWebsite());
+                    updateEmail.setText(d.getEmail());
+                    updatePassword.setText(d.getPassword());
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if(TextUtils.isEmpty(updateLink.getText().toString()) || TextUtils.isEmpty(updateEmail.getText().toString()) || TextUtils.isEmpty(updatePassword.getText().toString())){
+                                Toast.makeText(context,"Every Field Is Important",Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            Data updatedData=new Data();
+                            updatedData.setWebsite(updateLink.getText().toString());
+                            updatedData.setEmail(updateEmail.getText().toString());
+                            updatedData.setPassword(updatePassword.getText().toString());
+                            mDatabaseHelper.updateData(updatedData);
+                        }
+                    });
+                    AlertDialog alertDialog=builder.create();
+                    alertDialog.show();
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                }
+            };
+        }
+        private CancellationSignal getCancellationSignal1(){
+            c2=new CancellationSignal();
+            c2.setOnCancelListener(new CancellationSignal.OnCancelListener() {
+                @Override
+                public void onCancel() {
+
+                }
+            });
+            return c2;
         }
     }
 }
