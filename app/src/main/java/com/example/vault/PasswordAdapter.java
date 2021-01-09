@@ -30,7 +30,6 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
     private Context context;
     private List<Data> mDataList;
     private Data data;
-    private Boolean deletePassword=false;
     private CancellationSignal c1,c2,c3;
     public  PasswordAdapter(Context context,List<Data>dataList){
         this.context=context;
@@ -53,7 +52,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
         String p=data.getPassword();
         char[] a=p.toCharArray();
         for(int i=0;i<p.length();i++){
-            a[i]='✱';
+            a[i]='●';
         }
         String q=new String(a);
         holder.savedPassword.setText(q);
@@ -68,6 +67,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
         private TextView savedLink,savedUsername,savedPassword;
         private Button showPassword,update;
         private ImageButton delete;
+        private Boolean flag=false;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             savedLink=itemView.findViewById(R.id.website);
@@ -88,6 +88,27 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                 @Override
                 public void onClick(View v) {
                     authenticateUser1();
+                }
+            });
+            showPassword.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.P)
+                @Override
+                public void onClick(View v) {
+                    if(flag==false){
+                        authenticateUser2();
+                    }
+                    if(flag==true){
+                        Data m=mDataList.get(getAdapterPosition());
+                        String x=m.getPassword();
+                        char[] b=x.toCharArray();
+                        for(int i=0;i<x.length();i++){
+                            b[i]='●';
+                        }
+                        String y=new String(b);
+                        savedPassword.setText(y);
+                        showPassword.setText("Show Password");
+                    }
+                    flag=!flag;
                 }
             });
         }
@@ -241,6 +262,54 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                 }
             });
             return c2;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.P)
+        public void authenticateUser2(){
+            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication").setSubtitle("Authentication is required to continue").setDescription("This app uses biometric authentication to protect your data").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).build();
+            biometricPrompt.authenticate(getCancellationSignal2(),context.getMainExecutor(),getAuthenticationCallback2());
+        }
+        @RequiresApi(api = Build.VERSION_CODES.P)
+        private BiometricPrompt.AuthenticationCallback getAuthenticationCallback2(){
+            return new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                }
+
+                @Override
+                public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+                    super.onAuthenticationHelp(helpCode, helpString);
+                }
+
+                @Override
+                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    Data a=mDataList.get(getAdapterPosition());
+                    savedPassword.setText(a.getPassword());
+                    showPassword.setText("Hide Password");
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                }
+            };
+        }
+        private CancellationSignal getCancellationSignal2(){
+            c3=new CancellationSignal();
+            c3.setOnCancelListener(new CancellationSignal.OnCancelListener() {
+                @Override
+                public void onCancel() {
+
+                }
+            });
+            return c3;
         }
     }
 }
