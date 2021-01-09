@@ -235,6 +235,10 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                             updatedData.setPassword(updatePassword.getText().toString());
                             mDatabaseHelper.updateData(updatedData);
                             mDataList.set(getAdapterPosition(),updatedData);
+                            if(flag==true){
+                                showPassword.setText("Show Password");
+                                flag=!flag;
+                            }
                             if (mDataList.size()==0){
                                 ((PasswordActivity)context).toggle();
                                 PasswordAdapter.this.notifyItemChanged(getAdapterPosition(),updatedData);

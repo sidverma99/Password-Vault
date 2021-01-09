@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="15dp"
-        app:cardBackgroundColor="#FDD835"
+        app:cardBackgroundColor="#80bfff"
         app:cardCornerRadius="24dp">
 
         <RelativeLayout
@@ -50,14 +50,15 @@
                 android:text="Username -"
                 android:textColor="#000000"
                 android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/link"
-                android:layout_toRightOf="@+id/email"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/email"
                 android:fontFamily="@font/cabin_medium"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -84,23 +85,24 @@
                 android:fontFamily="@font/cabin_medium"
                 android:textColor="#000000"
                 android:textSize="18sp" />
+
             <Button
+                android:id="@+id/show_password_btn"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:text="Show Password"
-                android:id="@+id/show_password_btn"
-                android:clickable="true"
                 android:layout_below="@id/pin"
-                android:textSize="16sp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/background_btn"
-                android:textAllCaps="false"
+                android:clickable="true"
                 android:fontFamily="@font/cabin_medium"
-                android:textColor="#000000"/>
+                android:text="Show Password"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/update_password_btn"
-                android:layout_width="140dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/pin"
                 android:layout_marginLeft="15dp"
@@ -121,9 +123,9 @@
                 android:layout_below="@id/pin"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="21dp"
-                android:clickable="true"
                 android:layout_toRightOf="@id/update_password_btn"
                 android:background="@android:color/transparent"
+                android:clickable="true"
                 android:src="@drawable/delete" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
