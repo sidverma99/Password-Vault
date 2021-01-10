@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,16 +26,19 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyViewHolder> {
+public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyViewHolder> implements Filterable {
     private Context context;
     private List<Data> mDataList;
+    private List<Data> filteredList;
     private Data data;
     private CancellationSignal c1,c2,c3;
     public  PasswordAdapter(Context context,List<Data>dataList){
         this.context=context;
         this.mDataList=dataList;
+        this.filteredList=dataList;
     }
     private DatabaseHelper mDatabaseHelper;
     @NonNull
@@ -46,7 +51,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-        data=mDataList.get(position);
+        data=filteredList.get(position);
         holder.savedLink.setText(data.getWebsite());
         holder.savedUsername.setText(data.getEmail());
         String p=data.getPassword();
@@ -60,7 +65,37 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return filteredList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString=constraint.toString();
+                if(charString.isEmpty()){
+                    filteredList=mDataList;
+                } else {
+                    List<Data> newList=new ArrayList<>();
+                    for(Data d:mDataList){
+                        if(d.getEmail().toLowerCase().contains(charString.toLowerCase()) || d.getWebsite().toLowerCase().contains(charString.toLowerCase())){
+                            newList.add(d);
+                        }
+                    }
+                    filteredList=newList;
+                }
+                FilterResults filterResults=new FilterResults();
+                filterResults.values=filteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredList=(List<Data>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -98,7 +133,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                         authenticateUser2();
                     }
                     if(flag==true){
-                        Data m=mDataList.get(getAdapterPosition());
+                        Data m=filteredList.get(getAdapterPosition());
                         String x=m.getPassword();
                         char[] b=x.toCharArray();
                         for(int i=0;i<x.length();i++){
@@ -151,11 +186,11 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                 @Override
                 public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
-                    Data d=mDataList.get(getAdapterPosition());
+                    Data d=filteredList.get(getAdapterPosition());
                     mDatabaseHelper.deleteData(d);
-                    mDataList.clear();
-                    mDataList.addAll(mDatabaseHelper.getAllPassword());
-                    if (mDataList.size()==0){
+                    filteredList.clear();
+                    filteredList.addAll(mDatabaseHelper.getAllPassword());
+                    if (filteredList.size()==0){
                         ((PasswordActivity)context).toggle();
                         PasswordAdapter.this.notifyDataSetChanged();
                     } else {
@@ -212,7 +247,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                     final EditText updateLink=view.findViewById(R.id.update_website);
                     final EditText updateEmail=view.findViewById(R.id.update_email);
                     final EditText updatePassword=view.findViewById(R.id.update_password);
-                    Data d=mDataList.get(getAdapterPosition());
+                    Data d=filteredList.get(getAdapterPosition());
                     updateLink.setText(d.getWebsite());
                     updateEmail.setText(d.getEmail());
                     updatePassword.setText(d.getPassword());
@@ -234,12 +269,12 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                             updatedData.setEmail(updateEmail.getText().toString());
                             updatedData.setPassword(updatePassword.getText().toString());
                             mDatabaseHelper.updateData(updatedData);
-                            mDataList.set(getAdapterPosition(),updatedData);
+                            filteredList.set(getAdapterPosition(),updatedData);
                             if(flag==true){
                                 showPassword.setText("Show Password");
                                 flag=!flag;
                             }
-                            if (mDataList.size()==0){
+                            if (filteredList.size()==0){
                                 ((PasswordActivity)context).toggle();
                                 PasswordAdapter.this.notifyItemChanged(getAdapterPosition(),updatedData);
                             } else {
@@ -294,7 +329,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
                 @Override
                 public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
-                    Data a=mDataList.get(getAdapterPosition());
+                    Data a=filteredList.get(getAdapterPosition());
                     savedPassword.setText(a.getPassword());
                     showPassword.setText("Hide Password");
                 }
