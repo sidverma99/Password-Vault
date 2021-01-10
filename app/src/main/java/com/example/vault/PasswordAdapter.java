@@ -149,7 +149,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
         }
         @RequiresApi(api = Build.VERSION_CODES.P)
         public void authenticateUser(){
-            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication").setSubtitle("Authentication is required to continue").setDescription("This app uses biometric authentication to protect your data").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
+            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication is required to delete data").setSubtitle("").setDescription("").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -216,7 +216,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
         }
         @RequiresApi(api = Build.VERSION_CODES.P)
         public void authenticateUser1(){
-            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication").setSubtitle("Authentication is required to continue").setDescription("This app uses biometric authentication to protect your data").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
+            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication is required to update password").setSubtitle("").setDescription("").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -305,7 +305,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.MyView
 
         @RequiresApi(api = Build.VERSION_CODES.P)
         public void authenticateUser2(){
-            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication").setSubtitle("Authentication is required to continue").setDescription("This app uses biometric authentication to protect your data").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
+            BiometricPrompt biometricPrompt=new BiometricPrompt.Builder(context).setTitle("Biometric Authentication is required to show password").setSubtitle("").setDescription("").setNegativeButton("Cancel", context.getMainExecutor(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
