@@ -1,7 +1,7 @@
 # Password-Vault
 A password saving android application with biometric authentication to protect data. Biometric Authentication is required to enter into the list of saved password for a user, it is also required to update,delete and to show password.
 
-### Feature for Learners
+### Features
 * Biometric Authentication
 * Recycler View and Card View
 * Integrating SQLite with Android
