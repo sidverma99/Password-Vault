@@ -10,4 +10,4 @@ A password saving android application with biometric authentication to protect d
 * Implementation of filter method for adding search functionality
 
 ## Screenshots
-![test](app/src/main/res/drawable/ss1.jpg )
+![github-small](app/src/main/res/drawable/ss1.jpg )
