@@ -11,7 +11,7 @@ A password saving android application with biometric authentication to protect d
 
 ## Screenshots
 
-![alt text](app/src/main/res/drawable/ss1.jpg)
+![alt text](app/src/main/res/drawable/ss1.jpg width="48")
 ![alt text](https://i.imgur.com/URUEzO1.png)
 ![alt text](https://i.imgur.com/dS4zkXg.png)
 ![alt text](https://i.imgur.com/sIyQpNI.png)
