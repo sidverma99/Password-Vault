@@ -11,5 +11,5 @@ A password saving android application with biometric authentication to protect d
 
 ## Screenshots
 
-<img src="app/src/main/res/drawable/ss1.jpg" width="300" height="700"/>
+<img src="app/src/main/res/drawable/ss1.jpg" width="300" height="500"/>
 
