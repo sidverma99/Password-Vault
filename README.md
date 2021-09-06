@@ -9,6 +9,12 @@ A password saving android application with biometric authentication to protect d
 * Implementation of hide and show password method 
 * Implementation of filter method for adding search functionality
 
+## Video
+
+
+https://user-images.githubusercontent.com/60062454/132170100-d477bfcb-4715-4f38-bb9b-1421910ce5ea.mp4
+
+
 ## Screenshots
 
 <img src="app/src/main/res/drawable/ss1.jpg" width="250" height="500"/> <img src="app/src/main/res/drawable/ss2.jpg" width="250" height="500"/>
